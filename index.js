@@ -3,7 +3,7 @@ const express =require('express');
 const cores = require('cors');
 
 const routerApi = require('./routes');
-const {logErrors, erroHandler,boomHandler} = require('./middlewares/error.handler')
+const {logErrors, erroHandler,boomHandler, ormErrorHandler} = require('./middlewares/error.handler')
 
 const app  = express();
 const port = 3311;
@@ -30,13 +30,12 @@ routerApi(app);
 
 //////////////////
 app.use(logErrors);
+app.use(ormErrorHandler);
 app.use(boomHandler);
 app.use(erroHandler); // este tiene que ser el ultimo porque no tiene next
 ///////////////////
 
 //todo lo espesifico tiene que ir antes que lo dinamico (espesifico seria un ruta en conqureta sin parametros )
-
-
 
 
 app.listen(port, ()=>{

@@ -1,5 +1,8 @@
 ////Para que siempre sean detectados como middle tiene que tener los 4 elementos 
 
+const { ValidationError } = require("sequelize");
+const boom = require('@hapi/boom');
+
 // este caputrura el error y lo muestra 
 function logErrors (err,req,res,next){
     console.log('logErrors')
@@ -30,5 +33,17 @@ next(err);
 
 }
 
+function ormErrorHandler(err,req,res,next){
+    if (err instanceof ValidationError){
+        res.status(409).json({
+            statusCode:409,
+            message:err.name,
+            errors:err.errors
+        });
+    }
+    next(err);
 
-module.exports = {logErrors,erroHandler,boomHandler}
+}
+
+
+module.exports = {logErrors,erroHandler,boomHandler,ormErrorHandler}

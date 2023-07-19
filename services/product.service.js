@@ -1,23 +1,24 @@
 const { faker } = require("@faker-js/faker");
 const boom = require('@hapi/boom');
 
+const sequelize = require('../libs/sequelize');
+
 class ProductsService {
 
 
     constructor(){
         this.products = [];
         this.generate();
-
     }
 
      generate(){
         const limit =  100 ;
         for (let index = 0; index < limit; index++) {
                 this.products.push({
-                id: faker.datatype.uuid(),
+                id: faker.string.uuid(),
                 name:faker.commerce.productName(),
                 price:parseInt(faker.commerce.price(),10),
-                image:faker.image.imageUrl(),
+                image:faker.image.url(),
                 isBlock:faker.datatype.boolean(),
             });
             }   
@@ -33,11 +34,10 @@ class ProductsService {
     }
 
     async find(){
-        return new Promise ((resolve,reject)=>{
-            setTimeout (()=>{
-                resolve(this.products);
-            },5000);
-        })
+        const query = 'SELECT * FROM task';
+        const [data] = await sequelize.query(query);
+        //tambien tien metadata [data,metadata] 
+        return data;
     }
 
     async findOne(id){
