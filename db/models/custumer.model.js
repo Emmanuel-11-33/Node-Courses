@@ -32,7 +32,7 @@ const CustomerSchema = {
         defaultValue: Sequelize.NOW
       },
     userId:{
-      field :'user_id',
+      field :'user_id', // nombre de la colupna 
       allowNull: false,
       type: DataTypes.INTEGER,
       unique:true,
@@ -48,6 +48,7 @@ const CustomerSchema = {
 class Customer extends Model {
     static assocciate(models) {
         this.belongsTo(models.User, {as:'user'});
+        this.hasMany(models.Order,{as:'orders',foreignKey:'customerId'}); // un cliente puede tener muchas ordens
       }
     
       static config(sequelize) {

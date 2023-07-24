@@ -1,3 +1,6 @@
+// nesesario para el pg admin 
+/////////////permite manejar varias conexiones pero reutilizando la misma 
+//POOL = 
 const {Pool}  = require('pg');
 
 const {config} = require('../config/config');
@@ -8,8 +11,6 @@ const PASSWORD = encodeURIComponent(config.dbPassword);
 const URI =`postgres://${USER}:${PASSWORD}@${config.dbHost}:${config.dbPort}/${config.dbName}`;
 
 const pool = new Pool({connectionString: URI});
-
-
 
 module.exports = pool;
 

@@ -1,7 +1,7 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 
 
-const USER_TABLE = 'users';
+const USER_TABLE = 'users'; // nombre de la tabla que se creara 
 
 const UserSchema = {
   id: {
@@ -27,7 +27,7 @@ const UserSchema = {
   createdAt: {
     allowNull: false,
     type: DataTypes.DATE,
-    field: 'create_at',
+    field: 'create_at', // nombre de la colupna 
     defaultValue: Sequelize.NOW
   }
 }

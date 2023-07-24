@@ -3,7 +3,7 @@ const router = express.Router();
 const validatorHandler = require('../middlewares/validator.handler'); 
 
 const CustomerService=require('../services/custumer.service');
-const {getCustomerSchema,createCustomerSchema,updateCustomer} = require('../schemas/costumer.schema');
+const {getCustomerSchema,createCustomerSchema,updateCustomerSchema} = require('../schemas/costumer.schema');
 
 
 const service = new CustomerService();
@@ -45,7 +45,7 @@ async (req,res,next) =>{
 
 router.patch('/:id',
 validatorHandler(getCustomerSchema, 'params'),
-validatorHandler(updateCustomer, 'body'),
+validatorHandler(updateCustomerSchema, 'body'),
 async (req,res,next)=>{
     try {
         const {id} = req.params;

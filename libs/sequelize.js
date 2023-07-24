@@ -1,4 +1,5 @@
 //configuracion para mandar parametros a la base de datos 
+//ORM = Un ORM es un modelo de programación que permite mapear las estructuras de una base de datos relacionales.
 const {Sequelize } = require('sequelize');
 
 const {config} = require('../config/config');
