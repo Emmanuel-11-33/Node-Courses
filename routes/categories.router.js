@@ -1,15 +1,22 @@
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
+
 const validatorHandler = require('../middlewares/validator.handler'); 
 
-const CategoryService=require('../services/category.service');
+const CategoryService=require('../services/category.service')
+//const {checkAdminRole} = require('../middlewares/aunt.handler'); 
+const {checkRoles} = require('../middlewares/aunt.handler'); 
 const {createCategorySchema,updateCategorySchema,getCategorySchema} = require('../schemas/category.schema');
 
 
 const service = new CategoryService();
 
 
-router.get('/', async (req,res,next) => {
+router.get('/', 
+passport.authenticate('jwt', {session:false}),// manejo de sesion falso = esto porque no se usasn cookies
+checkRoles('admin','customer'),
+async (req,res,next) => {
     try {
         const categorys = await service.find();
         res.json(categorys);
@@ -30,7 +37,11 @@ async (req,res,next) =>{
     }
     });
 
+// se va a protejer el endpoint de categorias para que solo se puedan potear 
 router.post('/',
+passport.authenticate('jwt', {session:false}),// manejo de sesion falso = esto porque no se usasn cookies
+//checkAdminRole,
+checkRoles('admin'),
 validatorHandler(createCategorySchema, 'body'),
 async (req,res,next) =>{
     try {

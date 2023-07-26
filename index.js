@@ -5,13 +5,14 @@ const cores = require('cors');
 const routerApi = require('./routes');
 const {logErrors, erroHandler,boomHandler, ormErrorHandler} = require('./middlewares/error.handler')
 
+const {checkApiKey} = require('./middlewares/aunt.handler');
+
 const app  = express();
 const port = 3311;
 
 app.use(express.json());
 
 /////////////////cores 
-//app.use(cores()); asi acepta a cualquie origen 
 const whitelist = ['http://localhost:8080',];
 const options ={
     origin:(origin, callback)=>{
@@ -25,6 +26,11 @@ const options ={
 };
 app.use(cores(options));
 
+require('./utils/auth');// importo la estrategi de auth
+
+app.get('/ruta-protegida', checkApiKey, (req,res)=>{
+    res.send('Ruta protegida');
+});
 
 routerApi(app);
 

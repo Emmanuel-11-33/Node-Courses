@@ -36,7 +36,7 @@ async (req,res,next) =>{
     try {
         const body = req.body;
         const newCustomer = await service.create(body);
-        res.json({newCustomer})
+        res.json(newCustomer)
         
     } catch (error) {
         next(error)

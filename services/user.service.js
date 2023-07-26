@@ -1,4 +1,5 @@
 const boom  = require('@hapi/boom');
+const bcrypt=require('bcrypt');
 const {models }=require('../libs/sequelize');
 
 
@@ -15,13 +16,25 @@ class UserService {
 /////////////////////////
 
     async create(data){
-        const newUser = await models.User.create(data);
+        const hash = await bcrypt.hash(data.password,10);
+        const newUser = await models.User.create({
+            ...data,
+            password: hash
+        });
+        delete newUser.dataValues.password;// realmente los valores estan en data values  en el cas ose secualise
         return newUser;
     }
 
     async find(){
         const rta = await models.User.findAll({
             include:['customer']
+        });
+        return rta;
+    }
+
+    async findbyEmail(email){ // esto porque el user name de este sistema es el email 
+        const rta = await models.User.findOne({ // retorna el 1 usuario que concuerde
+            where:{email}  // el email
         });
         return rta;
     }

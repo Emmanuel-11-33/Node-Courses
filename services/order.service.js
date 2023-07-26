@@ -1,6 +1,7 @@
 const {models} = require('../libs/sequelize');
 const boom = require('@hapi/boom');
 
+
 class OrderService{
     constructor(){
     }
@@ -38,6 +39,21 @@ class OrderService{
     async addItem (data){
         const newItem = await models.OrderProduct.create(data);
         return newItem;
+    }
+
+    async findByUser(userId){
+        
+        const orders = await models.Order.findAll({
+            where:{  // cutomer no tiene id por eso teneo que ir a lade user
+                '$customer.user.id$':userId // consul por asosiacioens 
+            },
+            include:[
+        {
+            association:'customer',
+            include:['user'],   
+        }
+    ]});
+        return orders 
     }
 
     async delete(id){

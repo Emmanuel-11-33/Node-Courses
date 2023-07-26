@@ -34,10 +34,10 @@ async (req,res,next) =>{
     try {
         const body = req.body;
         const newUser = await service.create(body);
-        res.json({newUser})
+        res.json(newUser);
         
     } catch (error) {
-        next(error)
+        next(error);
     }
 });
 
